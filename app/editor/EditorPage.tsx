@@ -7,12 +7,37 @@ import LanguageDropdownMenu from './LanguageDropdownMenu';
 import ResultBlock from './ResultBlock';
 
 const EditorPage: React.FC = () => {
-  const [language, setLanguage] = useState<string>('javascript');
+  const [language, setLanguage] = useState<string>('python');
   const [code, setCode] = useState<string>('// Write your code here...');
   const [output, setOutput] = useState<string>('');
+  const [isError, setIsError] = useState<boolean>(false);
 
   const handleRunCode = async () => {
-    setOutput(`Running ${language} code...\n${code}`);
+    try {
+      const response = await fetch('/api/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: code,
+          language: language,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setOutput(result.output);
+        setIsError(false);
+      } else {
+        setOutput(result.message || 'Failed to execute code');
+        setIsError(true);
+      }
+    } catch (error) {
+      setOutput('Network error');
+      setIsError(true);
+    }
   };
 
   return (
@@ -22,12 +47,16 @@ const EditorPage: React.FC = () => {
         Select a programming language, write your code, and click "Run" to
         execute it.
       </p>
-      <LanguageDropdownMenu language={language} setLanguage={setLanguage} />{' '}
+
+      <LanguageDropdownMenu language={language} setLanguage={setLanguage} />
+
       <CodeEditor value={code} onChange={setCode} language={language} />
+
       <Button className="mt-4" onClick={handleRunCode}>
         Run
       </Button>
-      <ResultBlock output={output} />
+
+      <ResultBlock output={output} isError={isError} />
     </div>
   );
 };
