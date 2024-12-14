@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "title": "Print Hello World",
+  "description": "Write a program that prints 'Hello, world!' to the standard output.",
+  "difficulty": "easy",
+  "initial_code": {
+    "python": "# Write your code here...\nprint(\"Hello, world!\")",
+    "go": "// Write your code here...\npackage main\nimport \"fmt\"\nfunc main() {\n\tfmt.Println(\"Hello, world!\")\n}"
+  },
+  "test_cases": [{ "input": null, "expected_output": "Hello, world!" }]
+}

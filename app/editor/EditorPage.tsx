@@ -1,16 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '~/components/ui/button';
 import CodeEditor from './CodeEditor';
 import LanguageDropdownMenu from './LanguageDropdownMenu';
 import ResultBlock from './ResultBlock';
 
+const defaultComments: Record<string, string> = {
+  python: '# Write your code here...',
+  go: '// Write your code here...',
+};
+
+type Task = {
+  id: number;
+  title: string;
+  description: string;
+  initial_code: Record<string, string>;
+};
+
 const EditorPage: React.FC = () => {
   const [language, setLanguage] = useState<string>('python');
-  const [code, setCode] = useState<string>('// Write your code here...');
+  const [code, setCode] = useState<string>(defaultComments['python']);
   const [output, setOutput] = useState<string>('');
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean | undefined>(undefined);
+  const [task, setTask] = useState<Task | null>(null);
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      const response = await fetch('api/task.json');
+      const data = await response.json();
+      setTask(data);
+      setCode(data.initial_code['python']);
+    };
+
+    fetchTask();
+  }, []);
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    setCode(task?.initial_code[newLanguage] || '');
+  };
 
   const handleRunCode = async () => {
     try {
@@ -27,36 +56,50 @@ const EditorPage: React.FC = () => {
 
       const result = await response.json();
 
-      if (response.ok) {
+      if (result.status === 'success') {
         setOutput(result.output);
         setIsError(false);
-      } else {
-        setOutput(result.message || 'Failed to execute code');
+      } else if (result.status === 'error') {
+        setOutput(result.error || 'Error during code execution');
         setIsError(true);
       }
     } catch (error) {
-      setOutput('Network error');
+      setOutput('Network error occurred.');
       setIsError(true);
     }
   };
 
+  useEffect(() => {
+    setCode(defaultComments[language] || '// Write your code here...');
+  }, [language]);
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl mb-4">Code Editor</h1>
-      <p className="mb-4">
-        Select a programming language, write your code, and click "Run" to
-        execute it.
-      </p>
+      <div className="flex gap-4">
+        <div>
+          <h1 className="text-2xl font-bold mb-4">Task</h1>
+          {task ? (
+            <>
+              <h2 className="text-xl mb-2">{task.title}</h2>
+              <p className="mb-4">{task.description}</p>
+            </>
+          ) : (
+            <p>Loading task...</p>
+          )}
+        </div>
 
-      <LanguageDropdownMenu language={language} setLanguage={setLanguage} />
+        <div className="w-2/3">
+          <LanguageDropdownMenu language={language} setLanguage={setLanguage} />
 
-      <CodeEditor value={code} onChange={setCode} language={language} />
+          <CodeEditor value={code} onChange={setCode} language={language} />
 
-      <Button className="mt-4" onClick={handleRunCode}>
-        Run
-      </Button>
+          <Button className="mt-4" onClick={handleRunCode}>
+            Run
+          </Button>
 
-      <ResultBlock output={output} isError={isError} />
+          <ResultBlock output={output} isError={isError} />
+        </div>
+      </div>
     </div>
   );
 };
