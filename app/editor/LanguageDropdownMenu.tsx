@@ -27,12 +27,6 @@ const LanguageDropdownMenu: React.FC<DropdownMenuProps> = ({
       <DropdownMenuContent>
         <DropdownMenuLabel>Select Language</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => setLanguage('javascript')}>
-          JavaScript
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLanguage('typescript')}>
-          TypeScript
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setLanguage('python')}>
           Python
         </DropdownMenuItem>

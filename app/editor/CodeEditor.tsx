@@ -14,21 +14,20 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onChange,
   language,
 }) => {
-  const handleEditorChange: OnChange = (value) => {
-    if (value !== undefined) {
-      onChange(value);
+  const handleEditorChange: OnChange = (newValue) => {
+    if (newValue !== undefined) {
+      onChange(newValue);
     }
   };
 
-  const handleEditorMount: OnMount = (editor) => {
+  const handleEditorMount: OnMount = (editor, monaco) => {
     console.log('Editor is ready:', editor);
   };
 
   return (
     <Editor
       height="320px"
-      defaultLanguage={language}
-      defaultValue={value}
+      language={language}
       value={value}
       onChange={handleEditorChange}
       onMount={handleEditorMount}

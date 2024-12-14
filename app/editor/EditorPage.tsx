@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import CodeEditor from './CodeEditor';
-import ExecutionResult from './ExecutionResult';
 import LanguageDropdownMenu from './LanguageDropdownMenu';
+import ResultBlock from './ResultBlock';
 
 const EditorPage: React.FC = () => {
   const [language, setLanguage] = useState<string>('javascript');
@@ -27,7 +27,7 @@ const EditorPage: React.FC = () => {
       <Button className="mt-4" onClick={handleRunCode}>
         Run
       </Button>
-      <ExecutionResult output={output} />
+      <ResultBlock output={output} />
     </div>
   );
 };
