@@ -12,15 +12,15 @@ const ResultBlock: React.FC<ExecutionResultProps> = ({ output, isError }) => {
   return (
     <div
       className={clsx(
-        'mt-4 p-4 border rounded-sm',
+        'mt-4 p-4 border rounded-sm bg-surface-10 min-h-32',
         isError === undefined
-          ? 'bg-gray-100'
+          ? 'text-white'
           : isError
-          ? 'bg-red-100'
-          : 'bg-green-100'
+          ? 'text-red-700'
+          : 'text-green-500'
       )}
     >
-      <h2 className="text-xl mb-2">
+      <h2 className="text-lg mb-2">
         {isError === undefined
           ? 'Execution Result'
           : isError

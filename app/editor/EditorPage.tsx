@@ -75,9 +75,9 @@ const EditorPage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex gap-4">
-        <div>
-          <h1 className="text-2xl font-bold mb-4">Task</h1>
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="bg-surface-a10 p-4 rounded-sm">
+          <h1 className="text-2xl font-bold mb-4 text-primary-a20">Task</h1>
           {task ? (
             <>
               <h2 className="text-xl mb-2">{task.title}</h2>
@@ -88,12 +88,15 @@ const EditorPage: React.FC = () => {
           )}
         </div>
 
-        <div className="w-2/3">
+        <div className="w-full lg:w-2/3">
           <LanguageDropdownMenu language={language} setLanguage={setLanguage} />
 
           <CodeEditor value={code} onChange={setCode} language={language} />
 
-          <Button className="mt-4" onClick={handleRunCode}>
+          <Button
+            className="mt-4 bg-surface-a20 font-bold"
+            onClick={handleRunCode}
+          >
             Run
           </Button>
 
