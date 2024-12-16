@@ -36,11 +36,6 @@ const EditorPage: React.FC = () => {
     fetchTask();
   }, []);
 
-  const handleLanguageChange = (newLanguage: string) => {
-    setLanguage(newLanguage);
-    setCode(task?.initial_code[newLanguage] || '');
-  };
-
   const handleRunCode = async () => {
     try {
       const response = await fetch('/api/execute', {
