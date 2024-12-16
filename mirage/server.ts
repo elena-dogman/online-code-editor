@@ -1,4 +1,5 @@
 import { createServer, Response } from 'miragejs';
+import task from '../public/api/task.json';
 
 export function makeServer() {
   const server = createServer({
@@ -6,7 +7,7 @@ export function makeServer() {
       this.namespace = 'api';
 
       this.post('/execute', (schema, request) => {
-        const { language, code } = JSON.parse(request.requestBody);
+        const { code } = JSON.parse(request.requestBody);
 
         if (code.toLowerCase().includes('error')) {
           return new Response(
@@ -21,24 +22,12 @@ export function makeServer() {
 
         return {
           status: 'success',
-          output: `Hello, world!\nExecuted in language: ${language}`,
+          output: code,
         };
       });
 
       this.get('/task.json', () => {
-        return {
-          id: 1,
-          title: 'Print Hello World',
-          description:
-            "Write a program that prints 'Hello, world!' to the standard output.",
-          initial_code: {
-            python: '# Write your code here...\nprint("Hello, world!")',
-            javascript:
-              '// Write your code here...\nconsole.log("Hello, world!");',
-            go: `// Write your code here...\npackage main\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, world!")\n}`,
-          },
-          test_cases: [{ input: null, expected_output: 'Hello, world!' }],
-        };
+        return task;
       });
 
       this.passthrough();

@@ -15,7 +15,6 @@ type Task = {
   id: number;
   title: string;
   description: string;
-  initial_code: Record<string, string>;
 };
 
 const EditorPage: React.FC = () => {
@@ -30,7 +29,6 @@ const EditorPage: React.FC = () => {
       const response = await fetch('/api/task.json');
       const data = await response.json();
       setTask(data);
-      setCode(data.initial_code['python']);
     };
 
     fetchTask();
