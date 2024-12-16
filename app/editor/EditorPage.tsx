@@ -27,7 +27,7 @@ const EditorPage: React.FC = () => {
 
   useEffect(() => {
     const fetchTask = async () => {
-      const response = await fetch('api/task.json');
+      const response = await fetch('/api/task.json');
       const data = await response.json();
       setTask(data);
       setCode(data.initial_code['python']);

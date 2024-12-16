@@ -35,11 +35,13 @@ export function makeServer() {
             python: '# Write your code here...\nprint("Hello, world!")',
             javascript:
               '// Write your code here...\nconsole.log("Hello, world!");',
-            go: '// Write your code here...\npackage main\nimport "fmt"\nfunc main() {\n\tfmt.Println("Hello, world!")\n}',
+            go: `// Write your code here...\npackage main\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello, world!")\n}`,
           },
           test_cases: [{ input: null, expected_output: 'Hello, world!' }],
         };
       });
+
+      this.passthrough();
     },
   });
 
